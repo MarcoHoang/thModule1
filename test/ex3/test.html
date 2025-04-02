@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Account Management</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        #addAccountForm {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        #addAccountForm label,
+        #addAccountForm input {
+            margin: 0;
+        }
+        #addAccountForm input {
+            width: 150px;
+        }
+        button {
+            padding: 5px 15px;
+        }
+
+        #addAccountForm {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-field input {
+            width: 150px;
+        }
+        button {
+            padding: 5px 15px;
+        }
+        .form-field span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Savings Account Management</h2>
+
+    <h3>Add Savings Account</h3>
+    <form id="addAccountForm">
+        <div class="form-field">
+            <span>Code:</span>
+            <input type="text" id="code" name="code">
+        </div>
+
+        <div class="form-field">
+            <span>Type:</span>
+            <input type="text" id="type" name="type">
+        </div>
+
+        <div class="form-field">
+            <span>Customer Name:</span>
+            <input type="text" id="customerName" name="customerName">
+        </div>
+
+        <div class="form-field">
+            <span>ID Card:</span>
+            <input type="number" id="idCard" name="idCard">
+        </div>
+
+        <div class="form-field">
+            <span>Opening Date:</span>
+            <input type="date" id="openingDate" name="openingDate">
+        </div>
+
+        <div class="form-field">
+            <span>Amount:</span>
+            <input type="number" id="amount" name="amount">
+        </div>
+        <button type="submit">Add Account</button>
+    </form>
+    <h3>Delete Savings Account by Code</h3>
+    <div>
+        <span>Enter Account Code to Delete: </span>
+        <input type="text" id="deleteCode" name="deleteCode" placeholder="Nhập code">
+        <button onclick="deleteByCode()">Delete Account</button>
+    </div>
+
+    <h3>Savings Accounts List</h3>
+    <table id="accountsTable">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Type</th>
+                <th>Customer Name</th>
+                <th>ID Card</th>
+                <th>Opening Date</th>
+                <th>Amount</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>001</td>
+                <td>Ngan</td>
+                <td>Hoang</td>
+                <td>123456789</td>
+                <td>2024-01-01</td>
+                <td>5000000</td>
+                <td><button onclick="deleteSavingsAccount('001')">Delete</button></td>
+            </tr>
+            <tr>
+                <td>002</td>
+                <td>Dai</td>
+                <td>Tam</td>
+                <td>987654321</td>
+                <td>2024-02-15</td>
+                <td>3000000000000</td>
+                <td><button onclick="deleteSavingsAccount('002')">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        class SavingsAccount {
+            constructor(code, type, customerName, idCard, openingDate, amount) {
+                this.code = code;
+                this.type = type;
+                this.customerName = customerName;
+                this.idCard = idCard;
+                this.openingDate = openingDate;
+                this.amount = amount;
+            }
+
+            isValid() {
+                return (
+                    this.code.length <= 5 &&
+                    this.type.length <= 10 &&
+                    this.customerName.length <= 30 &&
+                    typeof this.idCard === "number" &&
+                    !isNaN(new Date(this.openingDate).getTime()) &&
+                    typeof this.amount === "number"
+                );
+            }
+        }
+
+        let savingsAccounts = [
+            new SavingsAccount('001', 'Ngan', 'Hoang', 123456789, '2024-01-01', 5000000),
+            new SavingsAccount('002', 'Dai', 'Tam', 987654321, '2024-02-15', 3000000000000)
+        ];
+
+        function addSavingsAccount(account) {
+            for (let i = 0; i < savingsAccounts.length; i++) {
+                if (savingsAccounts[i].code === account.code) {
+                    alert("Account already exists. Please enter again.");
+                    return;
+                }
+            }
+
+            if (!account.isValid()) {
+                alert("Invalid data. Please enter again.");
+                return;
+            }
+
+            savingsAccounts.push(account);
+            console.log("Savings account added successfully.");
+            displayAccounts();
+        }
+
+        function displayAccounts() {
+            const tableBody = document.getElementById('accountsTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = ''; 
+
+            savingsAccounts.forEach(account => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${account.code}</td>
+                    <td>${account.type}</td>
+                    <td>${account.customerName}</td>
+                    <td>${account.idCard}</td>
+                    <td>${account.openingDate}</td>
+                    <td>${account.amount}</td>
+                    <td><button onclick="deleteSavingsAccount('${account.code}')">Delete</button></td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        function deleteByCode() {
+            const codeToDelete = document.getElementById('deleteCode').value.trim();  
+
+            if (codeToDelete === "") {
+                alert("Please enter an account code.");
+                return;
+            }
+
+            const index = savingsAccounts.findIndex(a => a.code === codeToDelete);  
+            if (index !== -1) {
+                savingsAccounts.splice(index, 1);  
+                alert("Account deleted.");
+                displayAccounts();  
+            } else {
+                alert("Account not found.");
+            }
+
+            document.getElementById('deleteCode').value = "";
+        }
+
+        document.getElementById('addAccountForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const code = document.getElementById('code').value;
+            const type = document.getElementById('type').value;
+            const customerName = document.getElementById('customerName').value;
+            const idCard = Number(document.getElementById('idCard').value);
+            const openingDate = document.getElementById('openingDate').value;
+            const amount = Number(document.getElementById('amount').value);
+
+            const newAccount = new SavingsAccount(code, type, customerName, idCard, openingDate, amount);
+            addSavingsAccount(newAccount);
+
+            document.getElementById('addAccountForm').reset();
+        });
+    </script>
+
+</body>
+</html>

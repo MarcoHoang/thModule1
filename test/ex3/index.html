@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Book</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        #addAccountForm {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        #addAccountForm label,
+        #addAccountForm input {
+            margin: 0;
+        }
+        #addAccountForm input {
+            width: 150px;
+        }
+        button {
+            padding: 5px 15px;
+        }
+
+        #addAccountForm {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-field input {
+            width: 150px;
+        }
+        button {
+            padding: 5px 15px;
+        }
+        .form-field span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Savings Account Management</h2>
+
+    <h3>Add Savings Account</h3>
+    <form id="addAccountForm">
+        <div class="form-field">
+            <span>Code:</span>
+            <input type="text" id="code" name="code">
+        </div>
+
+        <div class="form-field">
+            <span>Type:</span>
+            <input type="text" id="type" name="type">
+        </div>
+
+        <div class="form-field">
+            <span>Customer Name:</span>
+            <input type="text" id="customerName" name="customerName">
+        </div>
+
+        <div class="form-field">
+            <span>ID Card:</span>
+            <input type="number" id="idCard" name="idCard">
+        </div>
+
+        <div class="form-field">
+            <span>Opening Date:</span>
+            <input type="date" id="openingDate" name="openingDate">
+        </div>
+
+        <div class="form-field">
+            <span>Amount:</span>
+            <input type="number" id="amount" name="amount">
+        </div>
+        <button type="submit">Add Account</button>
+        <div>
+            <span>Enter Account Code to Delete: </span>
+            <input type="text" id="deleteCode" name="deleteCode" placeholder="Nhập code">
+            <button onclick="deleteByCode()">Delete Account</button>
+        </div>
+    </form>
+
+    <h3>Savings Accounts List</h3>
+    <table id="accountsTable">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Type</th>
+                <th>Customer Name</th>
+                <th>ID Card</th>
+                <th>Opening Date</th>
+                <th>Amount</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>001</td>
+                <td>Ngan</td>
+                <td>Hoang</td>
+                <td>123456789</td>
+                <td>2024-01-01</td>
+                <td>5000000</td>
+                <td><button onclick="deleteSavingsAccount('001')">Delete</button></td>
+            </tr>
+            <tr>
+                <td>002</td>
+                <td>Dai</td>
+                <td>Tam</td>
+                <td>987654321</td>
+                <td>2024-02-15</td>
+                <td>3000000000000</td>
+                <td><button onclick="deleteSavingsAccount('002')">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <script src="script.js"></script>
+</body>
+</html>
